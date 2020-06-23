@@ -3,11 +3,13 @@ package ru.netology.manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.OfferOfTicket;
+import ru.netology.domain.OfferOfTicketComparatorByTime;
 import ru.netology.repository.OfferOfTicketRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OfferOfTicketManagerTest {
+    OfferOfTicketComparatorByTime comparatorByTime = new OfferOfTicketComparatorByTime();
     OfferOfTicketRepository repository = new OfferOfTicketRepository();
     OfferOfTicketManager manager = new OfferOfTicketManager(repository);
     private OfferOfTicket offer1 = new OfferOfTicket(1, 8810, "ZIA", "PRG", 1080);
@@ -25,17 +27,17 @@ class OfferOfTicketManagerTest {
 
     @Test
     void shouldSearchOneOffer() {
-        assertArrayEquals(new OfferOfTicket[]{offer1}, manager.searchBy("ZIA", "PRG"));
+        assertArrayEquals(new OfferOfTicket[]{offer1}, manager.searchBy("ZIA", "PRG", comparatorByTime));
     }
 
     @Test
     void shouldSearchMoreOffers() {
-        assertArrayEquals(new OfferOfTicket[]{offer3, offer2}, manager.searchBy("DME", "PRG"));
+        assertArrayEquals(new OfferOfTicket[]{offer2, offer3}, manager.searchBy("DME", "PRG", comparatorByTime));
     }
 
     @Test
     void shouldSearchNotExist() {
-        assertArrayEquals(new OfferOfTicket[]{}, manager.searchBy("SVO", "ZIA"));
+        assertArrayEquals(new OfferOfTicket[]{}, manager.searchBy("SVO", "ZIA", comparatorByTime));
     }
 
 }
