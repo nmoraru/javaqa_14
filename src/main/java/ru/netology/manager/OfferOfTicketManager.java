@@ -1,9 +1,11 @@
 package ru.netology.manager;
 
 import ru.netology.domain.OfferOfTicket;
+import ru.netology.domain.OfferOfTicketComparatorByTime;
 import ru.netology.repository.OfferOfTicketRepository;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class OfferOfTicketManager {
     private OfferOfTicketRepository repository = new OfferOfTicketRepository();
@@ -20,8 +22,9 @@ public class OfferOfTicketManager {
         return repository.findAll();
     }
 
-    public OfferOfTicket[] searchBy(String from, String to) {
+    public OfferOfTicket[] searchBy(String from, String to, Comparator<OfferOfTicket> comparatorByTime) {
         OfferOfTicket[] result = new OfferOfTicket[0];
+
         for (OfferOfTicket offer : repository.findAll()) {
             if (offer.getFromAirport().equalsIgnoreCase(from) && offer.getToAirport().equalsIgnoreCase(to)) {
                 OfferOfTicket[] tmp = new OfferOfTicket[result.length + 1];
@@ -30,7 +33,8 @@ public class OfferOfTicketManager {
                 result = tmp;
             }
         }
-        Arrays.sort(result);
+
+        Arrays.sort(result, comparatorByTime);
         return result;
     }
 
